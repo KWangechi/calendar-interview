@@ -1,7 +1,7 @@
 <?php
 // map my EventController and make endpoints available
 
-include_once('../controllers/EventController.php');
+require_once(__DIR__ . '/../controllers/EventController.php');
 
 $controller = new EventController();
 
@@ -29,11 +29,11 @@ switch ($method) {
         break;
 
     case 'PUT':
-        if (!$id) {
-            echo "Missing parameter id";
-            return;
-        }
         if ($action === 'updateEvent') {
+            if (!$id) {
+                echo "Missing parameter id";
+                return;
+            }
             $controller->updateEvent($id);
         } else {
             echo "Method not allowed";
@@ -41,11 +41,11 @@ switch ($method) {
         break;
 
     case 'DELETE':
-        if (!$id) {
-            echo "Missing parameter id";
-            return;
-        }
         if ($action === 'deleteEvent') {
+            if (!$id) {
+                echo "Missing parameter id";
+                return;
+            }
             $controller->deleteEvent($id);
         } else {
             echo "Method not allowed";

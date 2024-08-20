@@ -1,7 +1,8 @@
 
 <?php
 
-include_once("../config/db_connection.php");
+include_once(__DIR__ . "/../config/db_connection.php");
+
 class Event
 {
     private string $title;

@@ -1,9 +1,8 @@
 <?php
 // create the Controller for inserting events into the database
 
-include_once('../config/db_connection.php');
-include_once("../models/Event.php");
-include("../routes/index.php");
+include_once(__DIR__ . "/../models/Event.php");
+require_once(__DIR__ . "/../routes/index.php");
 
 
 class EventController
@@ -12,6 +11,10 @@ class EventController
     public function index()
     {
         echo "This is so cool";
+    }
+
+    public function submitFormData() {
+        print "Submit";
     }
 
     public function getAllEvents()

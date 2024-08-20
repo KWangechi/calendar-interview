@@ -3,6 +3,8 @@ $page        = 'dashboard';
 $header_name = 'Home';
 
 require_once 'header.php';
+// require(__DIR__. "/controllers/EventController.php")
+
 ?>
 
 <style data-fullcalendar=""></style>
@@ -12,7 +14,7 @@ require_once 'header.php';
     <div class="card app-calendar-wrapper">
         <div class="row g-0">
             <!-- Calendar Sidebar -->
-            <div class="col app-calendar-sidebar border-end" id="app-calendar-sidebar">
+            <div class="col app-calendar-sidebar border-end" id=""app-calendar-sidebar>
                 <div class="border-bottom p-6 my-sm-0 mb-4">
                     <button class="btn btn-primary btn-toggle-sidebar w-100" data-bs-toggle="offcanvas" data-bs-target="#addEventSidebar" aria-controls="addEventSidebar">
                         <i class="bx bx-plus bx-16px me-2"></i>
@@ -77,7 +79,7 @@ require_once 'header.php';
                         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
-                        <form class="event-form pt-0" id="eventForm" onsubmit="return false">
+                        <form class="event-form pt-0" id="eventForm" onsubmit="submitFormData()">
                             <div class="mb-6">
                                 <label class="form-label" for="eventTitle">Title</label>
                                 <input type="text" class="form-control" id="eventTitle" name="eventTitle" placeholder="Event Title" />
