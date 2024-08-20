@@ -2,92 +2,119 @@
 // create the Controller for inserting events into the database
 
 include_once('../config/db_connection.php');
+include_once("../models/Event.php");
+include("../routes/index.php");
 
 
-class EventController {
+class EventController
+{
 
-   public function index() {
-    echo "This is so cool";
+    public function index()
+    {
+        echo "This is so cool";
     }
 
-    public function getEvents() {
-        // get the database connection
+    public function getAllEvents()
+    {
         $conn = getConnection();
-        $query = "SELECT * FROM events";
+        $query = "SELECT id, title, description, start_date, end_date FROM events";
 
-        // get all the events
         $stmt = $conn->prepare($query);
         $stmt->execute();
 
-        if(!$stmt->get_result()) {
-            return 'No results found.';
-        }
-
-        // fetch all the rows
         $result = $stmt->get_result();
 
+        if ($result->num_rows === 0) {
+            echo json_encode([
+                "status" => http_response_code(200),
+                "message" => "No results found",
+                "data" => [],
+            ]);
+
+            return json_encode([
+                "status" => http_response_code(200),
+                "message" => "No results found",
+                "data" => [],
+                "message" => "No results found"
+            ]);
+        }
+
         // return a JSON response of the data
-        return json_encode($result->fetch_all(MYSQLI_ASSOC));
+        echo json_encode([
+            "status" => http_response_code(200),
+            "message" => "Success",
+            "data" => $result->fetch_all(MYSQLI_ASSOC)
+        ]);
+
+        return json_encode([
+            "status" => http_response_code(200),
+            "message" => "Success",
+            "data" => $result->fetch_all(MYSQLI_ASSOC)
+        ]);
     }
 
-    
+
     // method to insert a new event into the database
-    public function insertEvent($title, $description, $start_date, $end_date) {
-        // get the database connection
-        $conn = getConnection();
-        $newEvent = new Event($title, $description, $start_date, $end_date);
+    public function createEvent()
+    {
+        $data = json_decode(file_get_contents("php://input"));
 
-        // prepare SQL statement and bind the attributes individually
+        $newEvent = new Event($data->title, $data->label, $data->description, $data->start_date, $data->end_date, $data->allDay, $data->eventUrl, $data->location);
 
-        
-        $stmt = $conn->prepare("INSERT INTO events (title, description, start_date, end_date, user_id) VALUES (?,?,?,?,?)");
+        $result = $newEvent->createEvent($newEvent);
+
+        if (!$result) {
+            echo json_encode([
+                "status" => http_response_code(400),
+                "message" => "Error creating event",
+                "data" => []
+            ]);
+            return;
+        }
+
+        echo json_encode([
+            "status" => http_response_code(201),
+            "message" => "Event created successfully",
+            "data" => $data
+        ]);
+
+        return;
     }
 
     // method to update an existing event in the database
-    public function updateEvent($id, $title, $description, $start_date, $end_date) {
-        // get the database connection
-        $conn = getConnection();
+    public function updateEvent($id)
+    {
+        $data = json_decode(file_get_contents("php://input"));
+
+        $updatedEvent = new Event($data->title, $data->label, $data->description, $data->start_date, $data->end_date, $data->allDay, $data->eventUrl, $data->location);
+
+        if (!$updatedEvent->updateEvent($id, $updatedEvent)) {
+            return;
+        }
+
+        echo json_encode([
+            "status" => 200,
+            "message" => "Event updated successfully",
+            "data" => $data
+        ]);
     }
 
-    // method to delete an existing event from the database
-    public function deleteEvent($id) {
-        // get the database connection
-        $conn = getConnection();
+    /**
+     * Delete an event from the database
+     * @param int $id
+     */
+    public function deleteEvent($id)
+    {
+
+        $event = new Event();
+
+        if (!$event->deleteEvent($id)) {
+            return;
+        };
+
+        echo json_encode([
+            "status" => http_response_code(200),
+            "message" => "Event deleted successfully!"
+        ]);
     }
-
-    // method to retrieve all events for a specific user
-    // public function getAllEventsForUser($user_id) {
-    //     // get the database connection
-    //     $conn = getConnection();
-    // }
-
-    // // method to retrieve all events within a specific date range
-    // public function getAllEventsInRange($start_date, $end_date) {
-    //     // get the database connection
-    //     $conn = getConnection();
-    // }
-    // method to retrieve all events that are in the current month
-    // public function getAllEventsInCurrentMonth() {
-    //     // get the database connection
-    //     $conn = getConnection();
-    // }
-    // // method to retrieve all events that are in the current week
-    // public function getAllEventsInCurrentWeek() {
-    //     // get the database connection
-    //     $conn = getConnection();
-    // }
-    // // method to retrieve all events that are in the current day
-    // public function getAllEventsInCurrentDay() {
-    //     // get the database connection
-    //     $conn = getConnection();
-    // }
-    // // method to retrieve all events that are in the current hour
-    // public function getAllEventsInCurrentHour() {
-    //     // get the database connection
-    //     $conn = getConnection();
-    // }
-    
 }
-
-
-?>

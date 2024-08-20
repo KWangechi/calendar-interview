@@ -1,39 +1,58 @@
 <?php
 // map my EventController and make endpoints available
 
-$routes = [
-    'GET' => [
-        '/events' => 'EventController@index',
-        '/events/{id}' => 'EventController@show',
-    ],
-    'POST' => [
-        '/events' => 'EventController@store',
-    ],
-    'PUT' => [
-        '/events/{id}' => 'EventController@update',
-    ],
-    'DELETE' => [
-        '/events/{id}' => 'EventController@destroy',
-    ],
-];
+include_once('../controllers/EventController.php');
 
-$requestMethod = $_SERVER['REQUEST_METHOD'];
-$requestUri = $_SERVER['REQUEST_URI'];
+$controller = new EventController();
 
-// Find the matching route
-foreach ($routes[$requestMethod] as $route => $controllerMethod) {
-    // Check if the route matches the current request URI
-    if (preg_match('#^' . $route . '$#', $requestUri, $matches)) {
-        // Extract the parameters from the URI
-        $parameters = array_slice($matches, 1);
+$method = $_SERVER['REQUEST_METHOD'];
+$action = $_GET['action'] ?? '';
+$id = $_GET['id'] ?? null;
 
-        // Call the corresponding controller method
-        list($controller, $method) = explode('@', $controllerMethod);
-        $controller = new $controller();
-        call_user_func_array([$controller, $method], $parameters);
-
-        // Stop processing further routes
+switch ($method) {
+    case 'GET':
+        if ($action === 'getAllEvents') {
+            $controller->getAllEvents();
+        } elseif ($action === 'index') {
+            $controller->index();
+        } else {
+            echo "Method not allowed";
+        }
         break;
-    }
+
+    case 'POST':
+        if ($action === 'createEvent') {
+            $controller->createEvent();
+        } else {
+            echo "Method not allowed";
+        }
+        break;
+
+    case 'PUT':
+        if (!$id) {
+            echo "Missing parameter id";
+            return;
+        }
+        if ($action === 'updateEvent') {
+            $controller->updateEvent($id);
+        } else {
+            echo "Method not allowed";
+        }
+        break;
+
+    case 'DELETE':
+        if (!$id) {
+            echo "Missing parameter id";
+            return;
+        }
+        if ($action === 'deleteEvent') {
+            $controller->deleteEvent($id);
+        } else {
+            echo "Method not allowed";
+        }
+        break;
+
+    default:
+        echo "Method not supported.";
+        break;
 }
-?>

@@ -1,4 +1,3 @@
-
 # 📅 Calendar CRUD Operations
 
 Welcome to the Calendar CRUD Operations task! This task is designed to assess your ability to understand existing code and modify it to include CRUD (Create, Read, Update, Delete) operations with a database. You will be working on the backend implementation and ensuring seamless integration with the calendar frontend.
@@ -6,6 +5,7 @@ Welcome to the Calendar CRUD Operations task! This task is designed to assess yo
 ## 📝 Task Overview
 
 Your objective is to:
+
 - Create a fork of the codebase
 - Understand the given codebase.
 - Modify the relevant files to add CRUD operations for handling calendar events.
@@ -16,6 +16,7 @@ Your objective is to:
 ## 🔍 Assessment Criteria
 
 Your task will be assessed based on:
+
 1. **Database Connection**: Efficient and secure connection to the database.
 2. **Backend Implementation**: Clean and organized file structure.
 3. **API Development**: Robust and well-documented APIs for CRUD operations.
@@ -31,10 +32,21 @@ calendar-crud-operations/
 │   ├── js/
 │   ├── json/
 │   ├── vendor/
+├── config/
+    ├── db_connection.php/
+
+├── config/
+    ├── db_connection.php/
+├── controllers/
+|   ├── EventController.php/
 ├── includes/
 │   ├── scripts.php
 │   ├── search_bar.php
 │   ├── sidebar.php
+├── models/
+|   ├── Event.php/
+├── routes/
+|   ├── index.php/
 ├── .gitignore
 ├── header.php
 ├── footer.php
@@ -46,19 +58,23 @@ calendar-crud-operations/
 ## 📖 API Documentation
 
 ### Add Event
-- **URL**: ``
+
+- **URL**: `localhost/calendar-interview/controllers/EventController.php?action=createEvent`
 - **Method**: `POST`
 
 ### Fetch Events
-- **URL**: ``
+
+- **URL**: `localhost/calendar-interview/controllers/EventController.php?action=getAllEvents`
 - **Method**: `GET`
 
 ### Update Event
-- **URL**: ``
+
+- **URL**: `localhost/calendar-interview/controllers/EventController.php?action=updateEvent&id=:id`
 - **Method**: `PUT`
 
 ### Delete Event
-- **URL**: ``
+
+- **URL**: `localhost/calendar-interview/controllers/EventController.php?action=deleteEvent&id=:id`
 - **Method**: `DELETE`
 
 ## 💡 Tips for Success
