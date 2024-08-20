@@ -34,8 +34,6 @@ calendar-crud-operations/
 │   ├── vendor/
 ├── config/
     ├── db_connection.php/
-├── config/
-    ├── db_connection.php/
 ├── controllers/
 |   ├── EventController.php/
 ├── includes/
